@@ -1,0 +1,163 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Signup - Spend</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="stylesheet" href="signup.css">
+  </head>
+  <body>
+    <header>
+    <nav class="navbar section-content">
+        <a href="#" class="nav-logo">
+            <h2 class="logo-text">💲finBase</h2>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="./index.html" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+                <a href="about.html" class="nav-link">About</a>
+            </li>
+            <li class="nav-item">
+                <a href="./portfolio.html" class="nav-link">Portfolio</a>
+            </li>
+            <li class="nav-item">
+                <a href="./team.html" class="nav-link">Team</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link">Feature gallery <i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="./spend.html" class="dropdown-link">Spend</a></li>
+                    <li class="dropdown-item nested-dropdown">
+                        <a href="" class="dropdown-link">Transaction <i class="fas fa-caret-right"></i></a>
+                    <ul class="nested-dropdown-menu">
+                        <li><a href="./food.html" class="dropdown-link">Food</a></li>
+                        <li><a href="./accesories.html" class="dropdown-link">Accessories</a></li>
+                        <li><a href="./travel.html" class="dropdown-link">Travel</a></li>
+                        <li><a href="./academics.html" class="dropdown-link">Academics</a></li>
+                    </ul>
+                    </li>
+                    <li><a href="./activity.html" class="dropdown-link">Activity</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="https://forms.gle/iU7dPTkaQee2vkzJA" class="nav-link">Contact</a>
+            </li>
+            <li class="nav-item">
+                <a href="./login.html" class="nav-link">Login</a>
+            </li>
+        </ul>
+    </nav>
+   </header>
+    <div class="container">
+      <div class="form-container">
+        <h2>Create an Account</h2>
+        <form action="#">
+          <div class="input-container">
+            <input
+              type="text"
+              class="input-field"
+              id="username"
+              placeholder=" "
+              required
+            />
+            <label for="username">Username</label>
+          </div>
+          <div class="input-container">
+            <input
+              type="email"
+              class="input-field"
+              id="email"
+              placeholder=" "
+              required
+            />
+            <label for="email">Email Address</label>
+          </div>
+          <div class="input-container">
+            <input
+              type="password"
+              class="input-field"
+              id="password"
+              placeholder=" "
+              required
+            />
+            <label for="password">Password</label>
+          </div>
+          <div class="input-container">
+            <input
+              type="password"
+              class="input-field"
+              id="confirm-password"
+              placeholder=" "
+              required
+            />
+            <label for="confirm-password">Confirm Password</label>
+          </div>
+          <button type="submit" class="btn">Sign Up</button>
+        </form>
+        <div class="signup-link">
+          Already have an account? <a href="./login.html">Login here</a>
+        </div>
+      </div>
+    </div>
+    <script>
+        document.addEventListener("DOMContentLoaded", () => {
+          const usernameInput = document.getElementById("username");
+          const passwordInput = document.getElementById("password");
+          const confirmPasswordInput = document.getElementById("confirm-password");
+          const emailInput = document.getElementById("email");
+      
+          // Function to send data to Spring Boot
+          const sendToSpringBoot = async (newUser) => {
+            try {
+              const response = await fetch("http://localhost:8080/api/users", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(newUser),
+              });
+      
+              if (response.ok) {
+                alert("User created successfully!");
+              } else {
+                alert("Failed to create user. Please try again.");
+              }
+            } catch (error) {
+              console.error("Error:", error);
+              alert("An error occurred while sending data.");
+            }
+          };
+
+          document.querySelector("form").addEventListener("submit", (e) => {
+            e.preventDefault();
+            const username = usernameInput.value.trim(),
+              password = passwordInput.value.trim(),
+              email = emailInput.value.trim(),
+              confirmedPassword = confirmPasswordInput.value.trim();
+      
+            if (password !== confirmedPassword) {
+              alert("Please enter the same password for confirmation");
+              return;
+            }
+
+            usernameInput.value =
+              passwordInput.value =
+              confirmPasswordInput.value =
+              emailInput.value =
+                "";
+
+            const newUser = {
+              username: username,
+              password: password,
+              email: email,
+            };
+
+            sendToSpringBoot(newUser);
+          });
+        });
+      </script>
+  </body>
+</html>

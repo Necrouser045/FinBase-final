@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio - Spend</title>
+    <link rel="stylesheet" href="portfolio.css">
+  </head>
+  <body>
+   <header>
+    <nav class="navbar section-content">
+        <a href="#" class="nav-logo">
+            <h2 class="logo-text">💲finBase</h2>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="./index.html" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+                <a href="about.html" class="nav-link">About</a>
+            </li>
+            <li class="nav-item">
+                <a href="./portfolio.html" class="nav-link">portfolio</a>
+            </li>
+            <li class="nav-item">
+                <a href="./team.html" class="nav-link">Team</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link">Feature gallery <i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="./spend.html" class="dropdown-link">Spend</a></li>
+                    <li class="dropdown-item nested-dropdown">
+                        <a href="" class="dropdown-link">Transaction <i class="fas fa-caret-right"></i></a>
+                    <ul class="nested-dropdown-menu">
+                        <li><a href="./food.html" class="dropdown-link">Food</a></li>
+                        <li><a href="./accesories.html" class="dropdown-link">Accessories</a></li>
+                        <li><a href="./travel.html" class="dropdown-link">Travel</a></li>
+                        <li><a href="./academics.html" class="dropdown-link">Academics</a></li>
+                    </ul>
+                    </li>
+                    <li><a href="./activity.html" class="dropdown-link">Activity</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="https://forms.gle/iU7dPTkaQee2vkzJA" class="nav-link">Contact</a>
+            </li>
+            <li class="nav-item">
+                <a href="./login.html" class="nav-link">Login</a>
+            </li>
+        </ul>
+    </nav>
+   </header>
+   <div class="container">
+
+     <div class="profile-card" id="profile-card">
+       <img
+        src="./images/profile.jpg"
+        alt="Profile Image"
+      />
+      <h3>Name: <span id="display-name"></span></h3>
+      <h3>Username: <span id="display-username"></span></h3>
+      <h3>Email: <span id="display-email"></span></h3>
+      <h3>DOB: <span id="display-dob"></span></h3>
+    </div>
+    <div class="form-container">
+      <h2>User Portfolio</h2>
+      <form id="portfolio-form">
+        <div class="input-container">
+          <input
+            type="text"
+            class="input-field"
+            id="name"
+            placeholder=" "
+            required
+          />
+          <label for="name">Full Name</label>
+        </div>
+        <div class="input-container">
+          <input
+            type="email"
+            class="input-field"
+            id="email"
+            placeholder=" "
+            required
+          />
+          <label for="email">Email Address</label>
+        </div>
+        <div class="input-container">
+          <input
+            type="text"
+            class="input-field"
+            id="username"
+            placeholder=" "
+            required
+            />
+            <label for="username">Username</label>
+          </div>
+          <div class="input-container">
+            <input
+            type="date"
+            class="input-field"
+            id="dob"
+            placeholder=" "
+            required
+            />
+            <label for="dob">Date of Birth</label>
+          </div>
+          <button type="submit" class="btn">Save Changes</button>
+        </form>
+      </div>
+    </div>
+      
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        const profileCard = document.getElementById("profile-card");
+        const displayName = document.getElementById("display-name");
+        const displayUsername = document.getElementById("display-username");
+        const displayEmail = document.getElementById("display-email");
+        const displayDob = document.getElementById("display-dob");
+        const form = document.querySelector("#portfolio-form");
+        const nameInput = document.getElementById("name");
+        const usernameInput = document.getElementById("username");
+        const emailInput = document.getElementById("email");
+        const dobInput = document.getElementById("dob");
+
+        const data = JSON.parse(localStorage.getItem("data"));
+
+        if (data) {
+          displayName.textContent = data.name;
+          displayUsername.textContent = data.username;
+          displayEmail.textContent = data.email;
+          displayDob.textContent = data.dob;
+          profileCard.style.display = "block";
+        }
+
+        form.addEventListener("submit", (e) => {
+          e.preventDefault();
+
+          const name = nameInput.value.trim();
+          const username = usernameInput.value.trim();
+          const email = emailInput.value.trim();
+          const dob = dobInput.value.trim();
+
+          if (!name || !username || !email || !dob) {
+            alert("Please enter all the details");
+            return;
+          }
+
+          const newData = { name, username, email, dob };
+
+          displayName.textContent = name;
+          displayUsername.textContent = username;
+          displayEmail.textContent = email;
+          displayDob.textContent = dob;
+          profileCard.style.display = "block";
+
+          nameInput.value =
+            emailInput.value =
+            usernameInput.value =
+            dobInput.value =
+              "";
+
+          localStorage.setItem("data", JSON.stringify(newData));
+        });
+      });
+    </script>
+  </body>
+</html>

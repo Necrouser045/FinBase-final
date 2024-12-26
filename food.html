@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>🍔 Food Budget Tracker</title>
+    <style>
+      body {
+        margin: 0;
+        padding: 0;
+        font-family: "Poppins", sans-serif;
+        background: linear-gradient(120deg, #f6d365, #fda085);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .container {
+        width: 90%;
+        max-width: 600px;
+        border-radius: 15px;
+        overflow: hidden;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+        background: #fff;
+        animation: fadeIn 1s ease-in-out;
+      }
+
+      .photo-section {
+        width: 100%;
+        height: 200px;
+        overflow: hidden;
+        position: relative;
+      }
+
+      .food-photo {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        filter: brightness(0.85);
+        animation: zoomIn 3s ease infinite;
+      }
+
+      @keyframes zoomIn {
+        0%,
+        100% {
+          transform: scale(1);
+        }
+        50% {
+          transform: scale(1.1);
+        }
+      }
+
+      .info-section {
+        padding: 20px;
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+
+      .info-box {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px;
+        border-radius: 10px;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+        background: #f9f9f9;
+        transition: transform 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .info-box:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+      }
+
+      .info-label {
+        font-size: 16px;
+        font-weight: bold;
+        color: #333;
+      }
+
+      .info-input {
+        width: 60%;
+        padding: 10px;
+        font-size: 16px;
+        font-family: "Poppins", sans-serif;
+        color: #333;
+        border: 1px solid #ddd;
+        border-radius: 5px;
+        background: #f9f9f9;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+        transition: box-shadow 0.3s ease;
+      }
+
+      .info-input:focus {
+        outline: none;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .submit-button {
+        margin-top: 20px;
+        padding: 10px 20px;
+        font-size: 16px;
+        font-weight: bold;
+        color: #fff;
+        background: #ff7b54;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+        transition: background 0.3s ease, box-shadow 0.3s ease;
+      }
+
+      .submit-button:hover {
+        background: #ff5722;
+        box-shadow: 0 6px 15px rgba(0, 0, 0, 0.3);
+      }
+
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: scale(0.9);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="photo-section">
+        <img
+          src="https://static.vecteezy.com/system/resources/previews/035/490/019/non_2x/ai-generated-burger-clipart-design-illustration-free-png.png"
+          alt="Delicious Food"
+          class="food-photo"
+        />
+      </div>
+      <form class="info-section" id="info-Section">
+        <div class="info-box">
+          <label for="spend-input" class="info-label">Spend</label>
+          <input
+            type="number"
+            id="spend"
+            name="spend"
+            class="info-input"
+            value="500"
+          />
+        </div>
+        <div class="info-box">
+          <label for="budget-input" class="info-label">Budget</label>
+          <input
+            type="number"
+            id="budget"
+            name="budget"
+            class="info-input"
+            value="1000"
+          />
+        </div>
+        <div class="info-box">
+          <label for="limit-input" class="info-label">Limit</label>
+          <input
+            type="number"
+            id="margin"
+            name="limit"
+            class="info-input"
+            value="1500"
+          />
+        </div>
+        <button type="submit" class="submit-button">Submit</button>
+      </form>
+    </div>
+    <script>
+      document.addEventListener("DOMContentLoaded", () => {
+        document.getElementById("info-Section").addEventListener("submit", async (e) => {
+          e.preventDefault();
+
+          const email = localStorage.getItem("email")
+          const spend = parseFloat(document.getElementById("spend").value.trim());
+          const budget = parseFloat(document.getElementById("budget").value.trim());
+          const margin = parseFloat(document.getElementById("margin").value.trim());
+
+          if (!email || isNaN(spend) || isNaN(budget) || isNaN(margin)) {
+            alert("Please enter all the details correctly.");
+            return;
+          }
+
+          let currentUser = JSON.parse(localStorage.getItem("currentUserFood"));
+
+          try {
+            const response = await fetch(
+              `http://localhost:8080/api/checkUser?email=${email}`
+            );
+            if (!response.ok) throw new Error("Error fetching user from database.");
+            const dbUser = await response.json();
+
+            if (dbUser.exists) {
+              if (currentUser && currentUser.emailid === email) {
+                currentUser.spend += spend;
+                currentUser.budget += budget;
+                currentUser.margin += margin;
+                localStorage.setItem("currentUserFood", JSON.stringify(currentUser));
+              } else {
+                const updatedUser = { emailid: email, spend: 0, budget: 0, margin: 0 };
+                localStorage.setItem("currentUserFood", JSON.stringify(updatedUser));
+              }
+            } else {
+              alert("User not found. Redirecting to signup...");
+              window.location.href = "signup.html";
+              return;
+            }
+
+            const expenseData = { email, spend, budget, margin };
+
+            const saveResponse = await fetch("http://localhost:8080/expense/update", {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify(expenseData),
+            });
+
+            if (saveResponse.ok) {
+              const saveResult = await saveResponse.json();
+              if (saveResult.success) {
+                alert("Expense saved successfully!");
+              } else {
+                alert("Error saving expense: " + saveResult.message);
+              }
+            } else {
+              throw new Error("Error saving expense to database.");
+            }
+          } catch (error) {
+            console.error("Error:", error);
+            alert("An unexpected error occurred. Please try again.");
+          }
+        });
+      });
+    </script>
+  </body>
+</html>

@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Signup - Spend</title>
+  <style>
+    @import url("https://fonts.googleapis.com/css2?family=Miniver&family=Poppins:ital,wght@0,400;0,500;0,600;0,700;1,400&display=swap");
+
+    body {
+      margin: 0;
+      font-family: "Poppins", sans-serif; /* Using Poppins font */
+      color: #333;
+      /*background: linear-gradient(to bottom right, #003f7f, #001f3f);*/
+      background-color: #00203fff;
+
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+
+    .form-container {
+      background: white;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+      width: 400px;
+      text-align: center;
+    }
+
+    h2 {
+      color: #003f7f;
+      margin-bottom: 20px;
+    }
+
+    .input-container {
+      position: relative;
+      margin: 20px 0;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 12px 10px;
+      border-radius: 8px;
+      border: 2px solid #ccc;
+      font-size: 16px;
+      color: #333;
+      background-color: transparent;
+      box-sizing: border-box;
+      transition: border 0.3s ease, padding 0.3s ease;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: #003f7f; /* Border color when focused */
+      padding-top: 18px; /* Reduced padding */
+    }
+
+    .input-field:focus + label,
+    .input-field:not(:placeholder-shown) + label {
+      top: -10px;
+      left: 10px;
+      font-size: 12px;
+      color: #003f7f;
+      font-weight: bold;
+    }
+
+    label {
+      position: absolute;
+      top: 14px;
+      left: 10px;
+      font-size: 16px;
+      color: #aaa;
+      pointer-events: none;
+      transition: all 0.3s ease;
+      background-color: white;
+      padding: 0 5px;
+    }
+
+    .input-field:focus::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: white;
+      z-index: 1;
+      border-radius: 8px;
+      pointer-events: none;
+    }
+
+    .btn {
+      width: 100%;
+      padding: 12px;
+      background-color: #28a745; /* Green button color */
+      color: white;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .btn:hover {
+      background-color: #218838; /* Darker shade of green on hover */
+      transform: scale(1.01); /* Increase size to 105% */
+    }
+
+    .signup-link {
+      margin-top: 15px;
+      font-size: 14px;
+    }
+
+    .signup-link a {
+      color: #003f7f;
+      text-decoration: none;
+    }
+
+    .signup-link a:hover {
+      text-decoration: underline;
+    }
+  </style>
+</head>
+<body>
+<div class="form-container">
+  <h2>Create an Account</h2>
+  <form action="#">
+    <div class="input-container">
+      <input
+              type="text"
+              class="input-field"
+              id="username"
+              placeholder=" "
+              required
+      />
+      <label for="username">Username</label>
+    </div>
+    <div class="input-container">
+      <input
+              type="email"
+              class="input-field"
+              id="email"
+              placeholder=" "
+              required
+      />
+      <label for="email">Email Address</label>
+    </div>
+    <div class="input-container">
+      <input
+              type="password"
+              class="input-field"
+              id="password"
+              placeholder=" "
+              required
+      />
+      <label for="password">Password</label>
+    </div>
+    <div class="input-container">
+      <input
+              type="password"
+              class="input-field"
+              id="confirm-password"
+              placeholder=" "
+              required
+      />
+      <label for="confirm-password">Confirm Password</label>
+    </div>
+    <button type="submit" class="btn" onclick="sendToSpringBoot">Sign Up</button>
+  </form>
+  <div class="signup-link">
+    Already have an account? <a href="login.html">Login here</a>
+  </div>
+</div>
+<script>
+  document.addEventListener("DOMContentLoaded", () => {
+    const usernameInput = document.getElementById("username");
+    const passwordInput = document.getElementById("password");
+    const confirmPasswordInput = document.getElementById("confirm-password");
+    const emailInput = document.getElementById("email");
+
+    // Function to send data to Spring Boot
+    const sendToSpringBoot = async (newUser) => {
+      try {
+        const response = await fetch("http://localhost:8080/api/users", {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(newUser),
+        });
+
+        if (response.ok) {
+          alert("User created successfully!");
+        } else {
+          alert("Failed to create user. Please try again.");
+        }
+      } catch (error) {
+        console.error("Error:", error);
+        alert("An error occurred while sending data.");
+      }
+    };
+
+    // Form submission handler
+    document.querySelector("form").addEventListener("submit", (e) => {
+      e.preventDefault();
+      const username = usernameInput.value.trim(),
+        password = passwordInput.value.trim(),
+        email = emailInput.value.trim(),
+        confirmedPassword = confirmPasswordInput.value.trim();
+
+      if (password !== confirmedPassword) {
+        alert("Please enter the same password for confirmation");
+        return;
+      }
+
+      // Clear input fields
+      usernameInput.value =
+        passwordInput.value =
+        confirmPasswordInput.value =
+        emailInput.value =
+          "";
+
+      // Create a new user object
+      const newUser = {
+        username: username,
+        password: password,
+        email: email,
+      };
+
+      // Send the data to Spring Boot
+      sendToSpringBoot(newUser);
+    });
+  });
+</script>
+<div id="userList"></div>
+</body>
+</html>

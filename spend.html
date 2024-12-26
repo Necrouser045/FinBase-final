@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Spend</title>
+    <link rel="stylesheet" href="spend.css">
+  </head>
+  <body>
+    <header>
+    <nav class="navbar section-content">
+        <a href="#" class="nav-logo">
+            <h2 class="logo-text">💲finBase</h2>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="./index.html" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+                <a href="about.html" class="nav-link">About</a>
+            </li>
+            <li class="nav-item">
+                <a href="./portfolio.html" class="nav-link">Portfolio</a>
+            </li>
+            <li class="nav-item">
+                <a href="./team.html" class="nav-link">Team</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link">Feature gallery <i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="./spend.html" class="dropdown-link">Spend</a></li>
+                    <li class="dropdown-item nested-dropdown">
+                      <a href="" class="dropdown-link">Transaction <i class="fas fa-caret-right"></i></a>
+                    <ul class="nested-dropdown-menu">
+                        <li><a href="./food.html" class="dropdown-link">Food</a></li>
+                        <li><a href="./accesories.html" class="dropdown-link">Accessories</a></li>
+                        <li><a href="./travel.html" class="dropdown-link">Travel</a></li>
+                        <li><a href="./academics.html" class="dropdown-link">Academics</a></li>
+                    </ul>
+                    </li>
+                    <li><a href="./activity.html" class="dropdown-link">Activity</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="https://forms.gle/iU7dPTkaQee2vkzJA" class="nav-link">Contact</a>
+            </li>
+            <li class="nav-item">
+                <a href="./login.html" class="nav-link">Login</a>
+            </li>
+        </ul>
+    </nav>
+  </header>
+    <div class="container">
+      <div class="card">
+        <h3>Total Balance</h3>
+        <h1>$ <span id="totalBalance">48000.00</span></h1>
+        <div class="details">
+          <div class="section">
+            <div class="inner">
+              <img
+                src="./images/income.png"
+                alt="Income"
+              />
+              <span style="font-weight: bolder">Income</span>
+            </div>
+            <h5>$ <span id="totalBalance">2500.00</span></h5>
+          </div>
+          <div class="section">
+            <div class="inner">
+              <img
+                src="./images/expenses.png"
+                alt="Expenses"
+              />
+              <span style="font-weight: bolder">Expenses</span>
+            </div>
+            <h5>$ <span id="expensesAmount">800.00</span></h5>
+          </div>
+        </div>
+      </div>
+      <div class="transactions">
+        <div>
+          <div class="left">
+            <img src="./images/food.png" alt="Food" />
+            <h4><a href="./food.html">Food</a></h4>
+          </div>
+          <!-- <p>$ <span id="foodAmount">300.00</span></p> -->
+          <p>$ <span id="foodAmount"></span></p>
+        </div>
+        <div>
+          <div class="left">
+            <img src="./images/clothes.png" alt="Accessories" />
+            <h4><a href="./accesories.html">Accessories</a></h4>
+          </div>
+          <p>$ <span id="AccAmount"></span></p>
+        </div>
+        <div>
+          <div class="left">
+            <img src="./images/flight.png" alt="Travel" />
+            <h4><a href="./travel.html">Travel</a></h4>
+          </div>
+          <p>$ <span id="TravAmount"></span></p>
+        </div>
+        <div>
+          <div class="left">
+            <img src="./images/books.png" alt="Academics" />
+            <h4><a href="./academics.html">Academics</a></h4>
+          </div>
+          <p>$ <span id="AcaAmount"></span></p>
+        </div>
+        <div>
+          <div class="left">
+            <img src="./images/others.png" alt="Other" />
+            <h4><a href="#">Other</a></h4>
+          </div>
+          <p>$ <span id="otherAmount">50.00</span></p>
+        </div>
+      </div>
+    </div>
+    <script>
+      //Food
+      let currentUserFood = localStorage.getItem('currentUserFood');
+
+      if (currentUserFood) {
+        currentUserFood = JSON.parse(currentUserFood);
+        console.log(currentUserFood);
+        console.log(currentUserFood.spend);
+        if (currentUserFood && currentUserFood.spend) {
+          let spend = currentUserFood.spend;
+
+          document.getElementById('foodAmount').innerText = spend;
+        } else {
+          document.getElementById('foodAmount').innerText = '0.00';
+        }
+      } else {
+        document.getElementById('foodAmount').innerText = '0.00';
+      }
+
+      //Accesorries
+      let currentUserAcc = localStorage.getItem('currentUserAcc');
+
+      if (currentUserAcc) {
+        currentUserAcc = JSON.parse(currentUserAcc);
+        if (currentUserAcc && currentUserAcc.spend) {
+          let spend = currentUserAcc.spend;
+
+          document.getElementById('AccAmount').innerText = spend;
+        } else {
+          document.getElementById('AccAmount').innerText = '0.00';
+        }
+      } else {
+        document.getElementById('AccAmount').innerText = '0.00';
+      }
+
+      //Travel
+      let currentUserTrav = localStorage.getItem('currentUserTrav');
+
+      if (currentUserTrav) {
+        currentUserTrav = JSON.parse(currentUserTrav);
+        if (currentUserTrav && currentUserTrav.spend) {
+          let spend = currentUserTrav.spend;
+
+          document.getElementById('TravAmount').innerText = spend;
+        } else {
+          document.getElementById('TravAmount').innerText = '0.00';
+        }
+      } else {
+        document.getElementById('TravAmount').innerText = '0.00';
+      }
+
+      //Academics
+      let currentUserAca = localStorage.getItem('currentUserAca');
+
+      if (currentUserAca) {
+        currentUserAca = JSON.parse(currentUserAca);
+        if (currentUserAca && currentUserAca.spend) {
+          let spend = currentUserAca.spend;
+
+          document.getElementById('AcaAmount').innerText = spend;
+        } else {
+          document.getElementById('AcaAmount').innerText = '0.00';
+        }
+      } else {
+        document.getElementById('AcaAmount').innerText = '0.00';
+      }
+    </script>
+  </body>
+</html>

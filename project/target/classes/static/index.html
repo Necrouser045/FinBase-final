@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login Page</title>
+</head>
+<body>
+<form id="loginForm">
+  <label for="email">Email:</label>
+  <input type="email" id="email" required><br><br>
+  <label for="password">Password:</label>
+  <input type="password" id="password" required><br><br>
+  <button type="submit">Login</button>
+</form>
+
+<script>
+  // When the document is fully loaded
+  document.addEventListener("DOMContentLoaded", () => {
+      const emailInput = document.getElementById("email");
+      const passwordInput = document.getElementById("password");
+
+      // Handle form submission
+      document.getElementById("loginForm").addEventListener("submit", (e) => {
+          e.preventDefault();
+
+          const email = emailInput.value.trim();
+          const password = passwordInput.value.trim();
+
+          // Validate inputs
+          if (email === "" || password === "") {
+              alert("Please enter all the details");
+              return;
+          }
+
+          const loginData = { email, password };
+          console.log(loginData);
+
+          // Redirect to index.html after successful login
+          window.location.href = "/index.html";  // Redirects to index.html
+      });
+  });
+</script>
+</body>
+</html>

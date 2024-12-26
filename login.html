@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Login - Spend</title>
+    <link rel="stylesheet" href="login.css">
+  </head>
+  <body>
+    <header>
+    <nav class="navbar section-content">
+        <a href="#" class="nav-logo">
+            <h2 class="logo-text">💲finBase</h2>
+        <ul class="nav-menu">
+            <li class="nav-item">
+                <a href="./index.html" class="nav-link">Home</a>
+            </li>
+            <li class="nav-item">
+                <a href="about.html" class="nav-link">About</a>
+            </li>
+            <li class="nav-item">
+                <a href="./portfolio.html" class="nav-link">Portfolio</a>
+            </li>
+            <li class="nav-item">
+                <a href="./team.html" class="nav-link">Team</a>
+            </li>
+            <li class="nav-item dropdown">
+                <a href="#" class="nav-link">Feature gallery <i class="fas fa-caret-down"></i></a>
+                <ul class="dropdown-menu">
+                    <li><a href="./spend.html" class="dropdown-link">Spend</a></li>
+                    <li class="dropdown-item nested-dropdown">
+                        <a href="" class="dropdown-link">Transaction <i class="fas fa-caret-right"></i></a>
+                    <ul class="nested-dropdown-menu">
+                        <li><a href="./food.html" class="dropdown-link">Food</a></li>
+                        <li><a href="./accesories.html" class="dropdown-link">Accessories</a></li>
+                        <li><a href="./travel.html" class="dropdown-link">Travel</a></li>
+                        <li><a href="./academics.html" class="dropdown-link">Academics</a></li>
+                    </ul>
+                    </li>
+                    <li><a href="./activity.html" class="dropdown-link">Activity</a></li>
+                </ul>
+            </li>
+            <li class="nav-item">
+                <a href="https://forms.gle/iU7dPTkaQee2vkzJA" class="nav-link">Contact</a>
+            </li>
+            <li class="nav-item">
+                <a href="./login.html" class="nav-link">Login</a>
+            </li>
+        </ul>
+    </nav>
+   </header>
+    <div class="container">
+      <div class="form-container">
+        <h2>Login</h2>
+        <form action="#" id="loginForm">
+          <div class="input-container">
+            <input
+              type="email"
+              class="input-field"
+              id="email"
+              placeholder=" "
+              required
+            />
+            <label for="email">Email Address</label>
+          </div>
+          <div class="input-container">
+            <input
+              type="password"
+              class="input-field"
+              id="password"
+              placeholder=" "
+              required
+            />
+            <label for="password">Password</label>
+          </div>
+          <button type="submit" class="btn">Login</button>
+        </form>
+        <div class="signup-link">
+          Don't have an account? <a href="signup.html">Sign up here</a>
+        </div>
+      </div>
+    </div>
+    <script>
+      // When the document is fully loaded
+      document.addEventListener("DOMContentLoaded", () => {
+          const emailInput = document.getElementById("email");
+          const passwordInput = document.getElementById("password");
+
+          const sendToSpringBoot = async (User) => {
+            try {
+              const response = await fetch("http://localhost:8080/api/login", {
+                method: "POST",
+                headers: {
+                  "Content-Type": "application/json",
+                },
+                body: JSON.stringify(User),
+              });
+      
+              if (response.ok) {
+                window.location.href = "/index.html";
+              } else {
+                alert("Failed to login. Please try again.");
+              }
+            } catch (error) {
+              console.error("Error:", error);
+              alert("An error occurred while sending data.");
+            }
+          };
+
+          document.getElementById("loginForm").addEventListener("submit", (e) => {
+              e.preventDefault();
+
+              const email = emailInput.value.trim();
+              const password = passwordInput.value.trim();
+
+              if (email === "" || password === "") {
+                  alert("Please enter all the details");
+                  return;
+              }
+
+              const loginData = { email, password };
+              localStorage.setItem("email",email);
+              console.log(loginData);
+
+              sendToSpringBoot(loginData);
+          });
+      });
+  </script>
+  </body>
+</html>
